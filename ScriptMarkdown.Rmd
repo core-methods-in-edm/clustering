@@ -1,6 +1,12 @@
 # clustering
 Clustering example
 
+#Call libraries for clustering
+```{r}
+library(fpc)
+library(cluster)
+```
+
 ```{r}
 Data <- read.csv("online-tutor.csv")
 View(Data)
@@ -26,8 +32,18 @@ aggregate(Data,by=list(fit$cluster),FUN=mean)
 ```{r}
 Data <- data.frame(Data, fit$cluster) 
 ```
-#Plot Cluster
+#Plot Cluster on first 2 principal components
 ```{r}
 clusplot(Data, fit$cluster, color=TRUE, shade=TRUE, 
          labels=2, lines=0)
+```
+
+```{r}
+plotcluster(Data, fit$cluster)
+```
+#Show principal components
+```{r}
+pc <- princomp(Data)
+> plot(pc)
+> summary(pc)
 ```

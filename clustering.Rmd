@@ -1,0 +1,70 @@
+---
+title: "clustering"
+author: "Magdalena Bennett"
+date: "October 18, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+
+#Clears memory
+rm(list = ls())
+
+#Clear the console
+cat("\014")
+
+setwd("C:/Users/Magdalena Bennett/Dropbox/PhD Columbia/Fall 2016/Core Methods in EDM/clustering")
+
+#Load data
+d<-read.csv("online-tutor.csv")
+
+#Look at vairables names
+names(d)
+
+#Plot the data
+
+library(ggplot2)
+ggplot(d, aes(score, hints, color = height)) + geom_point()
+
+#Categorize the variable height, just to see if there is a relationship.
+d$height_c=2
+d$height_c[d$height<60]=1
+d$height_c[d$height>100]=3
+
+ggplot(d, aes(score, hints, color = as.factor(height_c))) + geom_point() #there doesn't appear to be a relationship
+
+#we set seed to allow to reproduce it
+set.seed(123)
+
+#Identify clusters by score and hints.
+clusterv1=kmeans(d[,c("score","hints")],centers=10,nstart = 10)
+
+#tabulate the clusters against the categorical variable of height to see if there is a relationship (there's apparently not)
+table(clusterv1$cluster,d$height_c)
+
+#We plot the clusters in the score-hints plot
+d$cluster=clusterv1$cluster
+
+ggplot(d, aes(score, hints, color = as.factor(cluster))) + geom_point()
+
+#Plot histograms of the score distribution stratified by cluster, to see if they differ and how they differ.
+ggplot(d) + geom_histogram(aes(x = score)) + facet_wrap(~ cluster)
+
+#We also plot height against cluster, to see if there is some sort of relationship (there doesn't seem so)
+ggplot(d, aes(as.factor(cluster),height, color = as.factor(cluster))) + geom_point()
+
+library(cluster)
+library(HSAUR)
+
+d_sm<-d[,c("score","hints")]
+
+clusplot(d_sm, clusterv1$cluster, color=TRUE, shade=TRUE, 
+         labels=2, lines=0)
+
+```
+

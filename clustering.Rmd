@@ -1,0 +1,56 @@
+---
+title: "clustering"
+author: "Zee"
+date: "18 October, 2016"
+output: html_document
+---
+
+
+```{r}
+#load library
+library(cluster)
+
+#import data
+data <- as.data.frame(read.csv("online-tutor.csv"))
+head(data)
+df <- scale(data[-1])
+
+#determine k
+wssplot <- function(data, nc=15, seed=1234){
+  wss <- (nrow(data)-1)*sum(apply(data,2,var))
+  for (i in 2:nc){
+    set.seed(seed)
+    wss[i] <- sum(kmeans(data, centers=i)$withinss)}
+  plot(1:nc, wss, type="b", xlab="Number of Clusters",
+       ylab="Within groups sum of squares")}
+
+wssplot(df, nc=6) 
+# k = 3 seems to be the best option
+
+# K-means
+k.means.fit <- kmeans(df, 3)
+attributes(k.means.fit)
+
+# Centroids
+k.means.fit$centers
+
+# Clusters
+k.means.fit$cluster
+
+# Cluster size
+k.means.fit$size
+
+
+clusplot(df, k.means.fit$cluster,main='2D representation of the Cluster solution',color=TRUE, shade=TRUE, lines=0)
+
+```
+
+
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

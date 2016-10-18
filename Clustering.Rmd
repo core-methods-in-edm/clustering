@@ -1,0 +1,36 @@
+---
+title: "Clustering"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+```{r}
+#First I will import the CSV data into R as a data frame called "D1"
+D1 <- read.csv("online-tutor.csv", header = TRUE, sep = ",")
+
+#Then I explored the data a little bit
+plot(D1$height, D1$score)
+plot(D1$height, D1$hints)
+plot(D1$score, D1$hints)
+cor(D1)
+mean(D1$height)
+
+#Then I tried doing some kmeans clustering
+D2 <- dplyr::select(D1, 4:5)
+Cluster <- kmeans(D2, 3)
+
+#OK, let's try exploring this thing we just created
+table(Cluster$centers)
+plot(Cluster$cluster, D1$hints)
+
+#OK, I have some clusters. Now to plot them in ggplot!
+install.packages("ggplot2")
+library(ggplot2)
+Cluster$cluster <- as.factor(Cluster$cluster)
+ggplot(D1, aes(hints, score, color = Cluster$cluster)) + geom_point()
+
+#It looks like I now have three distinct clusters in my data. I'm not sure how it adds value or insight to the analysis, but at least the code is working(ish)!

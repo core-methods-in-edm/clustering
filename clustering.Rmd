@@ -1,0 +1,58 @@
+---
+title: "clustering"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+1. description:
+We can see that the data set has four dimensions, the height of the student, if he/she wears glasses, scores and hints. 
+We want to find out if we can cluster the data based on similarity. 
+2. method:
+We can try k means method
+3. purpose of using k means:
+The algorithm just tries to find patterns in the data. We can use this method to group data into a certain number of clusters based on their similarity.
+4. limitations:
+The clusters are expected to be of similar size, so that the assignment to the nearest cluster center is the correct assignment. If the data set is divided into an inapropriate number of clusters, it might not work well. (eg. the Iris flower data set example)
+
+For our data set,
+
+first we gotta import the data set
+```{r}
+data1 = read.table("online-tutor.csv", header=TRUE, 
+  	sep=",", row.names="id")
+```
+after doing this, I found that there might be some interesting distribution among the score and hint variables.
+we can try first plotting the data to get a general idea.
+```{r}
+library(ggplot2)
+ggplot(data1, aes(score, hints, color = glasses)) + geom_point()
+```
+I was not sure if there is an obvious clustering pattern or not but I'd cluster them out anyway. 
+```{r}
+set.seed(20)
+dataCluster <- kmeans(data1[3:4], 3, nstart = 20)
+dataCluster
+```
+then I did a cluster plot to visualize the result. 
+```{r}
+library(cluster)
+clusplot(data1, dataCluster$cluster, color = TRUE, shade = TRUE, labels = 2, lines = 0)
+```
+As we can see from the plot, the actual clustering result was not that visible.
+So I tried to cluster them based on other variables.
+```{r}
+ggplot(data1, aes(height, score, color = glasses)) + geom_point()
+```
+But I didn't think there is any obvious relationship.
+But I grouped them. 
+```{r}
+set.seed(15)
+dataCluster2 <- kmeans(data1[1], 2, nstart = 20) # this time we try 2 clusters. 
+dataCluster2
+library(cluster)
+clusplot(data1, dataCluster2$cluster, color = TRUE, shade = TRUE, labels = 2, lines = 0)
+```
+It didn't actually show a clear pattern either. 
+
+

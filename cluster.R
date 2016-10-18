@@ -1,3 +1,5 @@
+library(datasets)
+library(ggplot2)
 tutor <- read.csv("online-tutor.csv")
 colnames(tutor) <- c("id","height","glasses","score","hint")
 

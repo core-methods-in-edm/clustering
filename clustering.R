@@ -50,6 +50,19 @@ library(mclust)
 fit <- Mclust(mydata)
 plot(fit) # plot results 
 summary(fit) # display the best model
+  
+  #----------------------------------------------------
+#(without glasses)Gaussian finite mixture model fitted by EM algorithm 
+#----------------------------------------------------
+
+#  Mclust VEV (ellipsoidal, equal shape) model with 4 components:
+
+#  log.likelihood    n df       BIC       ICL
+#-3896.939 1000 50 -8139.266 -8139.268
+
+#Clustering table:
+#  1   2   3   4 
+#222 199 364 215 
 
 # K-Means Clustering with 5 clusters
 fit1 <- kmeans(mydata, 4)

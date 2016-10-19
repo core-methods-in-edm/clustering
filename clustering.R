@@ -1,6 +1,4 @@
-library(twitteR)
-library(RSQLite)
-library(igraph)
+
 library(tidyr, dplyr)
 library(ggplot2)
 library(broom)

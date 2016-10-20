@@ -1,0 +1,55 @@
+---
+title: "Cluster_Example"
+author: "Gemy Pham"
+date: "10/20/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+cluster1 <- read.csv("/Users/Gemy/Downloads/clustering-master/online-tutor.csv")
+
+## Including Plots
+
+plot(cluster1$score)
+clusterx <- kmeans(cluster1, 5) # 5 cluster solution
+# get cluster means 
+aggregate(cluster1,by=list(cluster1$glasses),FUN=mean)
+
+# K-Means Clustering with 5 clusters
+fit1 <- kmeans(cluster1$hints, 5, nstart= 10)
+
+# Cluster Plot against 1st 2 principal components
+
+# vary parameters for most readable graph
+library(cluster) 
+clusplot(cluster1, fit1$cluster, color=TRUE, shade=TRUE, 
+  	labels=2, lines=0)
+
+# Centroid Plot against 1st 2 discriminant functions
+library(fpc)
+plotcluster(cluster1, fit1$cluster)
+
+### Second Cluster: 
+
+# K-Means Clustering with 5 clusters
+fit2 <- kmeans(cluster1$score, 4)
+
+# Cluster Plot against 1st 2 principal components
+
+# vary parameters for most readable graph
+library(cluster) 
+clusplot(cluster1, fit2$cluster, color=TRUE, shade=TRUE, 
+  	labels=2, lines=0)
+
+# Centroid Plot against 1st 2 discriminant functions
+library(fpc)
+plotcluster(cluster1, fit2$cluster)
+
+```
+

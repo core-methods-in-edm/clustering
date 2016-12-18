@@ -7,6 +7,9 @@ output: html_document
 
 
 ```{r}
+#set working directory
+setwd("~/Documents/EDM2016/clustering")
+
 #load library
 library(cluster)
 
@@ -15,7 +18,7 @@ data <- as.data.frame(read.csv("online-tutor.csv"))
 head(data)
 df <- scale(data[-1])
 
-#determine k
+#determine k (define the wssplot function)
 wssplot <- function(data, nc=15, seed=1234){
   wss <- (nrow(data)-1)*sum(apply(data,2,var))
   for (i in 2:nc){
@@ -25,32 +28,22 @@ wssplot <- function(data, nc=15, seed=1234){
        ylab="Within groups sum of squares")}
 
 wssplot(df, nc=6) 
-# k = 3 seems to be the best option
+# k = 3 seems to be the best option [Question]Why? [Guess] The rate of change between 3 clusters and 4 clusters starts to become relatively small. 
 
-# K-means
+# K-means [?]select random points to form clusters of 3
 k.means.fit <- kmeans(df, 3)
 attributes(k.means.fit)
 
-# Centroids
+# Centroids (show the center of each selected cluster)
 k.means.fit$centers
 
-# Clusters
+# Clusters (show which cluster each data point belongs to)
 k.means.fit$cluster
 
 # Cluster size
 k.means.fit$size
 
-
+# Cluster plot of the three clusters
 clusplot(df, k.means.fit$cluster,main='2D representation of the Cluster solution',color=TRUE, shade=TRUE, lines=0)
 
 ```
-
-
-
-You can also embed plots, for example:
-
-```{r, echo=FALSE}
-plot(cars)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
